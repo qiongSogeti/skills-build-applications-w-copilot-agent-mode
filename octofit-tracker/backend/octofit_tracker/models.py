@@ -1,9 +1,21 @@
 from djongo import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     team = models.CharField(max_length=100, blank=True, null=True)
+    groups = models.ManyToManyField(
+        Group,
+        related_name='octofit_users',  # nom unique
+        blank=True,
+        help_text="",
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='octofit_user_permissions',  # nom unique
+        blank=True,
+        help_text="",
+    )
 
 class Team(models.Model):
     name = models.CharField(max_length=100, unique=True)
